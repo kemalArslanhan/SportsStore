@@ -1,0 +1,32 @@
+﻿@model IEnumerable<string>
+    <link href="~/lib/bootstrap/css/StyleSheet.css" rel="stylesheet" />
+    <div class="container-fluid navigation-container">
+        <style>
+            .btn-block {
+                width: 100%;
+            }
+        </style>
+
+        @{
+            string longestItem = Model.OrderByDescending(x => x.Length).FirstOrDefault();
+            int buttonWidth = (longestItem.Length * 10) + 10; // Ekstra 10 piksel boşluk için
+        }
+
+        <a asp-action="Index" asp-route-category="" asp-route-productPage="1"
+           class="btn btn-block @(String.IsNullOrEmpty(ViewBag.SelectedCategory)
+                                    ? "btn-primary" :
+                                    "btn-outline-secondary")">Home</a>
+        
+
+        @foreach (var item in Model)
+        {<div class="mt-2">
+                <a asp-action="Index" asp-route-category="@item"
+                   asp-route-productPage="1"
+                   class="btn btn-block @(item == ViewBag.SelectedCategory ?
+                                          "btn-primary" : "btn-outline-secondary")"
+                    style="width: @(buttonWidth)px"
+                   >@item
+                </a>
+          </div>
+        }
+    </div>
